@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin - Jagat Literasi</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body style="background-color: #f1f5f9">
+    <header style="padding: 20px; margin-bottom: 20px">
+      <div
+        class="container"
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <h2 style="margin: 0">Dashboard Admin</h2>
+        <button
+          onclick="logout()"
+          style="
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+          "
+        >
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="form-container">
+        <h3 style="text-align: center; margin-bottom: 20px">Tulis Sesuatu</h3>
+
+        <form id="articleForm">
+          <label>Judul Tulisan</label>
+          <input
+            type="text"
+            id="judul"
+            required
+            placeholder="Judul yang menarik..."
+          />
+
+          <label>Kategori</label>
+          <select id="kategori">
+            <option value="filsafat">Filsafat</option>
+            <option value="psikologi">Psikologi</option>
+            <option value="puisi">Puisi</option>
+            <option value="refleksi">Refleksi</option>
+            <option value="news">News</option>
+            <option value="kecerdasan">Kecerdasan</option>
+            <option value="curhat">Curhat</option>
+          </select>
+
+          <label>Isi Tulisan</label>
+          <textarea
+            id="deskripsi"
+            rows="6"
+            required
+            placeholder="Tuangkan pikiranmu di sini..."
+          ></textarea>
+
+          <button type="submit" id="btnSubmit" class="btn-submit">
+            Terbitkan Tulisan
+          </button>
+        </form>
+        <p
+          id="pesanStatus"
+          style="
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            color: red;
+          "
+        ></p>
+      </div>
+
+      <div style="text-align: center; margin-top: 20px">
+        <a href="index.html" style="text-decoration: none; color: #64748b"
+          >&larr; Lihat Website Utama</a
+        >
+      </div>
+    </main>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+      // --- KONFIGURASI FIREBASE (PASTIKAN INI BENAR) ---
+      const firebaseConfig = {
+        apiKey: "AIzaSyD8uUkLW_u53miixh_nF5k-QDakwlaMhwk",
+        authDomain: "literasi-jagat.firebaseapp.com",
+        projectId: "literasi-jagat",
+        storageBucket: "literasi-jagat.firebasestorage.app",
+        messagingSenderId: "538860113045",
+        appId: "1:538860113045:web:6788735f7717dd7d6a1f9c",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Fungsi Logout
+      window.logout = function () {
+        localStorage.removeItem("isAdmin");
+        window.location.href = "index.html";
+      };
+
+      // Cek Login
+      if (localStorage.getItem("isAdmin") !== "true") {
+        window.location.href = "login.html";
+      }
+
+      // LOGIC SIMPAN DATA
+      document
+        .getElementById("articleForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const btn = document.getElementById("btnSubmit");
+          const status = document.getElementById("pesanStatus");
+
+          // Ambil Data
+          const judul = document.getElementById("judul").value;
+          const kategori = document.getElementById("kategori").value;
+          const deskripsi = document.getElementById("deskripsi").value;
+
+          try {
+            // Ubah tampilan tombol
+            btn.disabled = true;
+            btn.innerText = "⏳ Sedang Mengirim ke Server...";
+            status.innerText = ""; // Bersihkan pesan lama
+
+            // Proses Kirim ke Firebase
+            await addDoc(collection(db, "articles"), {
+              judul: judul,
+              kategori: kategori,
+              deskripsi: deskripsi,
+              tanggal: serverTimestamp(),
+            });
+
+            // Kalau Berhasil
+            alert("✅ Sukses! Tulisan berhasil diterbitkan.");
+            document.getElementById("articleForm").reset();
+            status.style.color = "green";
+            status.innerText = "Berhasil diposting!";
+          } catch (error) {
+            // KALAU GAGAL, errornya muncul di sini
+            console.error("Error lengkap:", error);
+
+            let pesanError = "Gagal memposting.";
+            if (error.message.includes("permission")) {
+              pesanError =
+                "GAGAL IZIN: Database terkunci. Cek langkah 'Firestore Rules' di panduan.";
+            } else if (error.message.includes("offline")) {
+              pesanError = "GAGAL KONEKSI: Cek internet kamu.";
+            } else {
+              pesanError = "ERROR: " + error.message;
+            }
+
+            alert(pesanError);
+            status.style.color = "red";
+            status.innerText = pesanError;
+          } finally {
+            // Kembalikan tombol seperti semula
+            btn.disabled = false;
+            btn.innerText = "Terbitkan Tulisan";
+          }
+        });
+    </script>
+  </body>
+</html>

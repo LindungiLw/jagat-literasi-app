@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <title>Login Admin</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="login-wrapper">
+      <div
+        class="form-container"
+        style="width: 100%; max-width: 400px; text-align: center"
+      >
+        <h2 style="margin-bottom: 10px; color: var(--primary)">Login Admin</h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px">
+          Area khusus pengelola konten.
+        </p>
+
+        <input
+          type="password"
+          id="password"
+          placeholder="Masukkan Kode Rahasia"
+          style="text-align: center; margin-bottom: 20px"
+        />
+        <button onclick="checkLogin()" class="btn-submit">
+          Masuk Dashboard
+        </button>
+
+        <div style="margin-top: 20px">
+          <a
+            href="index.html"
+            style="
+              font-size: 14px;
+              text-decoration: none;
+              color: var(--text-muted);
+            "
+            >Kembali ke Beranda</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function checkLogin() {
+        const pass = document.getElementById("password").value;
+        // Password Sederhana
+        if (pass === "admin123") {
+          localStorage.setItem("isAdmin", "true");
+          window.location.href = "admin.html";
+        } else {
+          alert("Password Salah!");
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,230 @@
+/* style.css - Modern Typography Design */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap");
+
+:root {
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+
+  /* Warna Kategori */
+  --color-filsafat: #7c3aed; /* Ungu */
+  --color-psikologi: #2563eb; /* Biru */
+  --color-puisi: #db2777; /* Pink */
+  --color-news: #ea580c; /* Oranye */
+  --color-curhat: #16a34a; /* Hijau */
+  --color-default: #475569; /* Abu */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  padding-bottom: 80px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+header {
+  background: white;
+  padding: 50px 0;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+
+header h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+}
+
+/* Navigasi */
+.category-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.btn {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  transition: 0.2s;
+}
+
+.btn:hover,
+.btn.active {
+  background: var(--text-main);
+  color: white;
+  border-color: var(--text-main);
+}
+
+/* Grid Kartu */
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+/* Desain Kartu Tanpa Gambar */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+  border: 1px solid var(--border);
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+/* Garis Warna di Atas Kartu */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--color-default); /* Default */
+}
+
+/* Warna Spesifik per Kategori */
+.card.filsafat::before {
+  background: var(--color-filsafat);
+}
+.card.psikologi::before {
+  background: var(--color-psikologi);
+}
+.card.puisi::before {
+  background: var(--color-puisi);
+}
+.card.news::before {
+  background: var(--color-news);
+}
+.card.curhat::before {
+  background: var(--color-curhat);
+}
+
+.card-tag {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 15px;
+}
+
+.card h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  line-height: 1.3;
+}
+
+.card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  flex-grow: 1;
+}
+
+.read-more {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Admin Form */
+.form-container {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 20px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--text-main);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-submit:hover {
+  background: #0f172a;
+}
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+  font-size: 0.9rem;
+}
+footer a {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 500;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+/* Responsif */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 2.5rem;
+  }
+  .card h3 {
+    font-size: 1.25rem;
+  }
+}

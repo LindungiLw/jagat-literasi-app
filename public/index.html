@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jagat Literasi</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Jagat Literasi</h1>
+        <p>Membaca adalah melawan.</p>
+      </div>
+    </header>
+
+    <nav class="container">
+      <div class="category-nav">
+        <button class="btn active" onclick="filterSelection('all')">
+          Semua
+        </button>
+        <button class="btn" onclick="filterSelection('filsafat')">
+          Filsafat
+        </button>
+        <button class="btn" onclick="filterSelection('psikologi')">
+          Psikologi
+        </button>
+        <button class="btn" onclick="filterSelection('puisi')">Puisi</button>
+        <button class="btn" onclick="filterSelection('news')">News</button>
+        <button class="btn" onclick="filterSelection('curhat')">Curhat</button>
+      </div>
+    </nav>
+
+    <main class="container">
+      <div class="content-grid" id="content-container">
+        <p style="grid-column: 1/-1; text-align: center; color: #888">
+          Memuat tulisan...
+        </p>
+      </div>
+    </main>
+
+    <footer
+      style="text-align: center; margin-top: 50px; color: #888; font-size: 14px"
+    >
+      <p>&copy; 2026 Jagat Literasi.</p>
+      <a href="login.html" style="text-decoration: none; color: #ccc">Admin</a>
+    </footer>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        query,
+        orderBy,
+      } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+      // CONFIG FIREBASE KAMU
+      const firebaseConfig = {
+        apiKey: "AIzaSyD8uUkLW_u53miixh_nF5k-QDakwlaMhwk",
+        authDomain: "literasi-jagat.firebaseapp.com",
+        projectId: "literasi-jagat",
+        storageBucket: "literasi-jagat.firebasestorage.app",
+        messagingSenderId: "538860113045",
+        appId: "1:538860113045:web:6788735f7717dd7d6a1f9c",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      async function loadArticles() {
+        const container = document.getElementById("content-container");
+        try {
+          const q = query(
+            collection(db, "articles"),
+            orderBy("tanggal", "desc"),
+          );
+          const querySnapshot = await getDocs(q);
+
+          container.innerHTML = "";
+
+          if (querySnapshot.empty) {
+            container.innerHTML =
+              "<p style='text-align:center; width:100%;'>Belum ada tulisan.</p>";
+            return;
+          }
+
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            const card = document.createElement("div");
+            card.className = `card ${data.kategori}`; // Class untuk warna garis atas
+
+            // HTML Kartu (Tanpa Gambar, Fokus Teks)
+            card.innerHTML = `
+                        <div class="card-tag">${data.kategori}</div>
+                        <h3>${data.judul}</h3>
+                        <p>${data.deskripsi}</p>
+                        <a href="#" class="read-more">Baca Selengkapnya &rarr;</a>
+                    `;
+            container.appendChild(card);
+          });
+        } catch (error) {
+          console.error(error);
+          container.innerHTML =
+            "<p style='color:red; text-align:center;'>Gagal memuat data.</p>";
+        }
+      }
+
+      loadArticles();
+    </script>
+
+    <script>
+      function filterSelection(category) {
+        let cards = document.getElementsByClassName("card");
+        if (category === "all") category = "";
+        for (let i = 0; i < cards.length; i++) {
+          cards[i].style.display = "none";
+          if (cards[i].className.indexOf(category) > -1) {
+            cards[i].style.display = "flex";
+          }
+        }
+        // Update Tombol Aktif
+        let btns = document.getElementsByClassName("btn");
+        for (let btn of btns) {
+          btn.classList.remove("active");
+          if (
+            btn.innerText.toLowerCase() === category ||
+            (category === "" && btn.innerText === "Semua")
+          )
+            btn.classList.add("active");
+        }
+      }
+    </script>
+  </body>
+</html>
