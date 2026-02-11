@@ -2,89 +2,194 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Admin - Jagat Literasi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Niskala Baca</title>
+
     <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
-  <body style="background-color: #f1f5f9">
-    <header style="padding: 20px; margin-bottom: 20px">
-      <div
-        class="container"
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        "
-      >
-        <h2 style="margin: 0">Dashboard Admin</h2>
-        <button
-          onclick="logout()"
-          style="
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-          "
-        >
-          Logout
-        </button>
-      </div>
-    </header>
-
-    <main class="container">
-      <div class="form-container">
-        <h3 style="text-align: center; margin-bottom: 20px">Tulis Sesuatu</h3>
-
-        <form id="articleForm">
-          <label>Judul Tulisan</label>
-          <input
-            type="text"
-            id="judul"
-            required
-            placeholder="Judul yang menarik..."
-          />
-
-          <label>Kategori</label>
-          <select id="kategori">
-            <option value="filsafat">Filsafat</option>
-            <option value="psikologi">Psikologi</option>
-            <option value="puisi">Puisi</option>
-            <option value="refleksi">Refleksi</option>
-            <option value="news">News</option>
-            <option value="kecerdasan">Kecerdasan</option>
-            <option value="curhat">Curhat</option>
-          </select>
-
-          <label>Isi Tulisan</label>
-          <textarea
-            id="deskripsi"
-            rows="6"
-            required
-            placeholder="Tuangkan pikiranmu di sini..."
-          ></textarea>
-
-          <button type="submit" id="btnSubmit" class="btn-submit">
-            Terbitkan Tulisan
+  <body>
+    <div class="admin-layout">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <i class="ri-book-open-fill"></i> Niskala Admin
+        </div>
+        <nav class="sidebar-menu">
+          <a href="#" class="active"
+            ><i class="ri-dashboard-line"></i> Dashboard</a
+          >
+          <a href="index.html" target="_blank"
+            ><i class="ri-eye-line"></i> Lihat Website</a
+          >
+          <a href="#" style="opacity: 0.5; cursor: not-allowed"
+            ><i class="ri-file-list-line"></i> Semua Artikel</a
+          >
+          <a href="#" style="opacity: 0.5; cursor: not-allowed"
+            ><i class="ri-user-smile-line"></i> Komentar</a
+          >
+        </nav>
+        <div class="sidebar-footer">
+          <button
+            onclick="logout()"
+            class="btn-primary"
+            style="background: var(--danger)"
+          >
+            <i class="ri-logout-box-r-line"></i> Logout
           </button>
-        </form>
-        <p
-          id="pesanStatus"
-          style="
-            text-align: center;
-            margin-top: 15px;
-            font-weight: bold;
-            color: red;
-          "
-        ></p>
-      </div>
+        </div>
+      </aside>
 
-      <div style="text-align: center; margin-top: 20px">
-        <a href="index.html" style="text-decoration: none; color: #64748b"
-          >&larr; Lihat Website Utama</a
-        >
-      </div>
-    </main>
+      <main class="main-content">
+        <div class="top-bar">
+          <div>
+            <h1 class="page-title">Selamat Datang, Rahma!</h1>
+            <p style="color: var(--text-muted)">
+              Berikut ringkasan performa websitemu hari ini.
+            </p>
+          </div>
+          <div
+            class="date-badge"
+            style="
+              background: white;
+              padding: 8px 16px;
+              border-radius: 8px;
+              border: 1px solid var(--border);
+              font-weight: 600;
+            "
+          >
+            <span id="currentDate"></span>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: #e0e7ff; color: var(--primary)"
+            >
+              <i class="ri-eye-2-line"></i>
+            </div>
+            <div class="stat-info">
+              <h3>1,240</h3>
+              <p>Total Pembaca</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: #dcfce7; color: var(--success)"
+            >
+              <i class="ri-article-line"></i>
+            </div>
+            <div class="stat-info">
+              <h3>24</h3>
+              <p>Artikel Terbit</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div
+              class="stat-icon"
+              style="background: #fce7f3; color: var(--cat-puisi)"
+            >
+              <i class="ri-heart-3-line"></i>
+            </div>
+            <div class="stat-info">
+              <h3>86</h3>
+              <p>Menyukai</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <h3 style="margin-bottom: 20px">Statistik Pengunjung Minggu Ini</h3>
+          <canvas id="visitorChart"></canvas>
+        </div>
+
+        <div class="form-panel">
+          <h3
+            style="
+              margin-bottom: 20px;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            "
+          >
+            <i class="ri-pencil-fill" style="color: var(--primary)"></i> Tulis
+            Artikel Baru
+          </h3>
+
+          <form id="articleForm">
+            <div class="input-group">
+              <label>Judul Artikel</label>
+              <input
+                type="text"
+                id="judul"
+                class="form-control"
+                placeholder="Contoh: Mengapa Langit Biru?"
+                required
+              />
+            </div>
+
+            <div
+              class="input-group"
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px"
+            >
+              <div>
+                <label>Kategori</label>
+                <select id="kategori" class="form-control">
+                  <option value="filsafat">Filsafat</option>
+                  <option value="psikologi">Psikologi</option>
+                  <option value="puisi">Puisi</option>
+                  <option value="news">News</option>
+                  <option value="curhat">Curhat</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  >Link Gambar (URL)
+                  <small style="color: var(--text-muted); font-weight: 400"
+                    >*Opsional</small
+                  ></label
+                >
+                <input
+                  type="text"
+                  id="imageUrl"
+                  class="form-control"
+                  placeholder="https://contoh.com/gambar.jpg"
+                />
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label>Isi Tulisan</label>
+              <textarea
+                id="deskripsi"
+                class="form-control"
+                rows="8"
+                placeholder="Tuangkan pikiranmu di sini..."
+                required
+              ></textarea>
+            </div>
+
+            <button type="submit" id="btnSubmit" class="btn-primary">
+              Terbitkan Sekarang
+            </button>
+            <p
+              id="pesanStatus"
+              style="margin-top: 15px; font-weight: 600; text-align: center"
+            ></p>
+          </form>
+        </div>
+      </main>
+    </div>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -95,7 +200,7 @@
         serverTimestamp,
       } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-      // --- KONFIGURASI FIREBASE (PASTIKAN INI BENAR) ---
+      // --- 1. CONFIG FIREBASE ---
       const firebaseConfig = {
         apiKey: "AIzaSyD8uUkLW_u53miixh_nF5k-QDakwlaMhwk",
         authDomain: "literasi-jagat.firebaseapp.com",
@@ -108,73 +213,105 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      // Fungsi Logout
+      // --- 2. SECURITY CHECK ---
+      if (localStorage.getItem("isAdmin") !== "true") {
+        window.location.href = "login.html";
+      }
       window.logout = function () {
         localStorage.removeItem("isAdmin");
         window.location.href = "index.html";
       };
 
-      // Cek Login
-      if (localStorage.getItem("isAdmin") !== "true") {
-        window.location.href = "login.html";
-      }
+      // --- 3. TANGGAL HARI INI ---
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+      document.getElementById("currentDate").innerText =
+        new Date().toLocaleDateString("id-ID", options);
 
-      // LOGIC SIMPAN DATA
+      // --- 4. LOGIC SUBMIT ARTIKEL ---
       document
         .getElementById("articleForm")
         .addEventListener("submit", async function (e) {
           e.preventDefault();
-
           const btn = document.getElementById("btnSubmit");
           const status = document.getElementById("pesanStatus");
 
-          // Ambil Data
           const judul = document.getElementById("judul").value;
           const kategori = document.getElementById("kategori").value;
           const deskripsi = document.getElementById("deskripsi").value;
+          // Ambil URL gambar, kalau kosong pakai gambar default
+          let gambar = document.getElementById("imageUrl").value;
+          if (!gambar)
+            gambar =
+              "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=800&q=80";
 
           try {
-            // Ubah tampilan tombol
             btn.disabled = true;
-            btn.innerText = "⏳ Sedang Mengirim ke Server...";
-            status.innerText = ""; // Bersihkan pesan lama
+            btn.innerHTML =
+              "<i class='ri-loader-4-line ri-spin'></i> Menyimpan...";
 
-            // Proses Kirim ke Firebase
             await addDoc(collection(db, "articles"), {
               judul: judul,
               kategori: kategori,
               deskripsi: deskripsi,
+              gambar: gambar, // Simpan URL Gambar
               tanggal: serverTimestamp(),
             });
 
-            // Kalau Berhasil
-            alert("✅ Sukses! Tulisan berhasil diterbitkan.");
+            alert("✅ Berhasil Terbit!");
             document.getElementById("articleForm").reset();
             status.style.color = "green";
-            status.innerText = "Berhasil diposting!";
+            status.innerText = "Artikel berhasil ditambahkan!";
           } catch (error) {
-            // KALAU GAGAL, errornya muncul di sini
-            console.error("Error lengkap:", error);
-
-            let pesanError = "Gagal memposting.";
-            if (error.message.includes("permission")) {
-              pesanError =
-                "GAGAL IZIN: Database terkunci. Cek langkah 'Firestore Rules' di panduan.";
-            } else if (error.message.includes("offline")) {
-              pesanError = "GAGAL KONEKSI: Cek internet kamu.";
-            } else {
-              pesanError = "ERROR: " + error.message;
-            }
-
-            alert(pesanError);
+            console.error(error);
+            alert("Gagal: " + error.message);
             status.style.color = "red";
-            status.innerText = pesanError;
+            status.innerText = "Error: " + error.message;
           } finally {
-            // Kembalikan tombol seperti semula
             btn.disabled = false;
-            btn.innerText = "Terbitkan Tulisan";
+            btn.innerText = "Terbitkan Sekarang";
           }
         });
+
+      // --- 5. SETUP DIAGRAM (CHART.JS) ---
+      // Ini membuat grafik dummy supaya dashboard terlihat hidup
+      const ctx = document.getElementById("visitorChart").getContext("2d");
+      const myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: [
+            "Senin",
+            "Selasa",
+            "Rabu",
+            "Kamis",
+            "Jumat",
+            "Sabtu",
+            "Minggu",
+          ],
+          datasets: [
+            {
+              label: "Pengunjung Website",
+              data: [12, 19, 3, 5, 22, 30, 45], // Data Dummy
+              borderColor: "#4f46e5",
+              backgroundColor: "rgba(79, 70, 229, 0.1)",
+              borderWidth: 2,
+              fill: true,
+              tension: 0.4, // Garis melengkung
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true },
+          },
+        },
+      });
     </script>
   </body>
 </html>

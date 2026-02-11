@@ -1,230 +1,403 @@
-/* style.css - Modern Typography Design */
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap");
-
+/* =========================================
+   1. CORE VARIABLES & RESET (Niskala UI System)
+   ========================================= */
 :root {
-  --bg: #f8fafc;
-  --card-bg: #ffffff;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --border: #e2e8f0;
+  /* Brand Colors */
+  --primary: #4f46e5; /* Indigo 600 */
+  --primary-hover: #4338ca; /* Indigo 700 */
+  --secondary: #64748b; /* Slate 500 */
+  --success: #10b981; /* Emerald 500 */
+  --danger: #ef4444; /* Red 500 */
+  --warning: #f59e0b; /* Amber 500 */
 
-  /* Warna Kategori */
-  --color-filsafat: #7c3aed; /* Ungu */
-  --color-psikologi: #2563eb; /* Biru */
-  --color-puisi: #db2777; /* Pink */
-  --color-news: #ea580c; /* Oranye */
-  --color-curhat: #16a34a; /* Hijau */
-  --color-default: #475569; /* Abu */
+  /* Backgrounds */
+  --bg-body: #f1f5f9; /* Slate 100 */
+  --bg-card: #ffffff;
+  --bg-sidebar: #1e293b; /* Slate 800 */
+
+  /* Typography */
+  --text-main: #0f172a; /* Slate 900 */
+  --text-muted: #64748b; /* Slate 500 */
+  --text-light: #f8fafc;
+
+  /* Borders & Shadows */
+  --border: #e2e8f0;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+
+  /* Kategori Colors */
+  --cat-filsafat: #7c3aed;
+  --cat-psikologi: #2563eb;
+  --cat-puisi: #db2777;
+  --cat-news: #ea580c;
+  --cat-curhat: #16a34a;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  outline: none;
 }
 
 body {
   font-family: "Plus Jakarta Sans", sans-serif;
-  background-color: var(--bg);
+  background-color: var(--bg-body);
   color: var(--text-main);
-  padding-bottom: 80px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: 0.2s;
+}
+ul {
+  list-style: none;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* =========================================
+   2. PUBLIC PAGE STYLES (Index.html)
+   ========================================= */
+.navbar {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-/* Header */
-header {
-  background: white;
-  padding: 50px 0;
+.hero-section {
   text-align: center;
+  padding: 80px 0;
+  background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
   border-bottom: 1px solid var(--border);
-  margin-bottom: 40px;
 }
 
-header h1 {
+.hero-title {
   font-family: "Playfair Display", serif;
-  font-size: 3rem;
-  margin-bottom: 10px;
-  letter-spacing: -1px;
+  font-size: 3.5rem;
+  color: var(--text-main);
+  margin-bottom: 1rem;
 }
 
-/* Navigasi */
-.category-nav {
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Filter Buttons */
+.filter-container {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 40px;
+  margin: 40px 0;
+  flex-wrap: wrap;
 }
 
-.btn {
-  background: white;
+.filter-btn {
+  background: var(--bg-card);
   border: 1px solid var(--border);
-  padding: 10px 20px;
+  padding: 10px 24px;
   border-radius: 50px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-weight: 600;
   color: var(--text-muted);
-  transition: 0.2s;
+  transition: all 0.3s ease;
 }
 
-.btn:hover,
-.btn.active {
-  background: var(--text-main);
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--primary);
   color: white;
-  border-color: var(--text-main);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
-/* Grid Kartu */
-.content-grid {
+/* Card Design Premium */
+.grid-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+  padding-bottom: 80px;
 }
 
-/* Desain Kartu Tanpa Gambar */
-.card {
-  background: white;
-  border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+.article-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
   border: 1px solid var(--border);
-  transition: transform 0.2s;
   display: flex;
   flex-direction: column;
-  position: relative;
-  overflow: hidden;
 }
 
-.card:hover {
+.article-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  box-shadow: var(--shadow-lg);
 }
 
-/* Garis Warna di Atas Kartu */
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background: var(--color-default); /* Default */
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background-color: #cbd5e1;
 }
 
-/* Warna Spesifik per Kategori */
-.card.filsafat::before {
-  background: var(--color-filsafat);
-}
-.card.psikologi::before {
-  background: var(--color-psikologi);
-}
-.card.puisi::before {
-  background: var(--color-puisi);
-}
-.card.news::before {
-  background: var(--color-news);
-}
-.card.curhat::before {
-  background: var(--color-curhat);
+.card-content {
+  padding: 24px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.card-tag {
+.card-category {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 700;
+  margin-bottom: 12px;
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #f1f5f9;
   color: var(--text-muted);
-  margin-bottom: 15px;
 }
 
-.card h3 {
+.article-card.filsafat .card-category {
+  color: var(--cat-filsafat);
+  background: #f3e8ff;
+}
+.article-card.psikologi .card-category {
+  color: var(--cat-psikologi);
+  background: #dbeafe;
+}
+.article-card.puisi .card-category {
+  color: var(--cat-puisi);
+  background: #fce7f3;
+}
+.article-card.news .card-category {
+  color: var(--cat-news);
+  background: #ffedd5;
+}
+
+.card-title {
   font-family: "Playfair Display", serif;
   font-size: 1.5rem;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   line-height: 1.3;
 }
 
-.card p {
+.card-desc {
   color: var(--text-muted);
   font-size: 0.95rem;
-  line-height: 1.7;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   flex-grow: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.read-more {
-  text-decoration: none;
+/* =========================================
+   3. ADMIN DASHBOARD LAYOUT (Admin.html)
+   ========================================= */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background: var(--bg-sidebar);
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+}
+
+.sidebar-brand {
+  font-size: 1.5rem;
   font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--text-main);
+  margin-bottom: 40px;
+  color: white;
+  font-family: "Playfair Display", serif;
+  text-align: center;
+}
+
+.sidebar-menu a {
   display: flex;
   align-items: center;
-  gap: 5px;
-}
-
-/* Admin Form */
-.form-container {
-  background: white;
-  padding: 40px;
-  border-radius: 12px;
-  max-width: 600px;
-  margin: 0 auto;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0 20px 0;
-  border: 1px solid var(--border);
+  gap: 12px;
+  padding: 12px 16px;
+  color: #94a3b8;
   border-radius: 8px;
-  font-family: inherit;
-}
-
-.btn-submit {
-  width: 100%;
-  padding: 14px;
-  background: var(--text-main);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.btn-submit:hover {
-  background: #0f172a;
-}
-/* Footer */
-footer {
-  text-align: center;
-  padding: 20px 0;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border);
-  margin-top: 40px;
-  font-size: 0.9rem;
-}
-footer a {
-  color: var(--text-main);
-  text-decoration: none;
+  margin-bottom: 5px;
   font-weight: 500;
 }
-footer a:hover {
-  text-decoration: underline;
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active {
+  background: var(--primary);
+  color: white;
 }
-/* Responsif */
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 2.5rem;
+
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid #334155;
+  padding-top: 20px;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  margin-left: 260px; /* Lebar sidebar */
+  padding: 30px;
+  background: #f8fafc;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Stats Cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.stat-info h3 {
+  font-size: 2rem;
+  margin: 0;
+  line-height: 1;
+}
+.stat-info p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Chart Area */
+.chart-container {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 30px;
+  height: 400px;
+}
+
+/* Form Styling */
+.form-panel {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: 0.3s;
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+/* Responsive Dashboard */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  } /* Hide sidebar on mobile for simplicity */
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
   }
-  .card h3 {
-    font-size: 1.25rem;
+  .hero-title {
+    font-size: 2.5rem;
   }
 }
